@@ -10,10 +10,18 @@ import { clearErrors, login, register } from "../../actions/userAction";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
+
+
 const LoginSignup = () => {
+
+  const { error, loading, isAuthenticated } = useSelector(
+    (state) => state.user
+  );
+
+
   const dispatch = useDispatch();
   const notifyAlert = () => {
-    toast.success("🦄 Wow so easy!", {
+    toast.error(`Error: ${error}`, {
       position: "bottom-right",
       autoClose: 5000,
       hideProgressBar: false,
@@ -24,10 +32,6 @@ const LoginSignup = () => {
       theme: "light",
     });
   };
-
-  const { error, loading, isAuthenticated } = useSelector(
-    (state) => state.user
-  );
 
   const loginTab = useRef(null);
   const registerTab = useRef(null);
@@ -82,15 +86,16 @@ const LoginSignup = () => {
   };
   const navigate = useNavigate()
   const token = localStorage.getItem('token')
+
   useEffect(() => {
     if (token) {
       navigate('/')
     }
   }, [])
+
   useEffect(() => {
-    console.log("Error:", error);
     if (error) {
-      alert(error);
+      notifyAlert();
       dispatch(clearErrors());
     }
     console.log(isAuthenticated);
@@ -156,7 +161,6 @@ const LoginSignup = () => {
                 <input
                   type="submit"
                   value="Login"
-                  onClick={notifyAlert}
                   className="loginBtn"
                 />
               </form>

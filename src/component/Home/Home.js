@@ -1,24 +1,34 @@
 import { Fragment, useEffect } from 'react';
 import ProductCard from './ProductCard';
-import { FaMousePointer } from 'react-icons/fa';
 import './Home.css';
 import { useSelector, useDispatch } from 'react-redux';
 import { getProduct } from '../../actions/productAction'
-import { useNavigate } from 'react-router-dom';
 import Loader from '../layout/Loader/Loader';
 import MetaData from "../layout/MetaData"
+import { ToastContainer, toast } from "react-toastify";
 
-// import {useAlert} from 'react-alert'
+
 const Home = () => {
   const dispatch = useDispatch();
   const { loading, error, products, productCount } = useSelector((state) => state.products);
   console.log(loading, error, products, productCount);
-  const navigate = useNavigate()
-  const userName = localStorage.getItem('user')
+  const userName = localStorage.getItem('user');
+  const notifyAlert = () => {
+    toast.error(`Error: ${error}`, {
+      position: "bottom-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+  };
   useEffect(() => {
-    // if(error){
-    //   return alert.error("Error")
-    // }
+    if (error) {
+      notifyAlert();
+    }
     dispatch(getProduct());
   }, []);
   return (
@@ -52,6 +62,18 @@ const Home = () => {
                 <ProductCard key={product._id} product={product} />
               ))}
           </div>
+          <ToastContainer
+            position="bottom-center"
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="light"
+          />
         </Fragment>
       )}
     </Fragment>

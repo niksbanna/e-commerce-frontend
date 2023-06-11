@@ -12,6 +12,17 @@
   padding: 12px 16px;
 }
 
+.cart-icon {
+  width: 2rem;
+  height: 2rem;
+  cursor: pointer;
+}
+
+.cart-count {
+  font-size: 0.7rem;
+  color: #fff;
+}
+
 .navbar__item {
   padding: 16px 16px;
   font-size: 0.7rem;

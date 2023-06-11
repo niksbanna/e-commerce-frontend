@@ -1,14 +1,17 @@
 import React, { Fragment } from "react";
 import CheckoutSteps from "../Cart/CheckoutSteps";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import MetaData from "../../component/layout/MetaData";
 import "./ConfirmOrder.css";
 import { Link } from "react-router-dom";
 import { Typography } from "@material-ui/core";
+import { loadUser } from "../../actions/userAction";
 
 const ConfirmOrder = ({ history }) => {
   const { saveShippingInfo, cartItems } = useSelector((state) => state.cart);
-  const { user } = useSelector((state) => state.user);
+  const dispatch = useDispatch()
+  const user = dispatch(loadUser());
+  console.log("user", user, 'shippininfo', saveShippingInfo)
 
   const subtotal = cartItems.reduce(
     (acc, item) => acc + item.quantity * item.price,
@@ -21,7 +24,7 @@ const ConfirmOrder = ({ history }) => {
 
   const totalPrice = subtotal + tax + shippingCharges;
 
-  const address = `${saveShippingInfo.address}, ${saveShippingInfo.city}, ${saveShippingInfo.state}, ${saveShippingInfo.pinCode}, ${saveShippingInfo.country}`;
+  const address = `${saveShippingInfo?.address ?? ""} ${saveShippingInfo?.city ?? ""} ${saveShippingInfo?.state ?? ""} ${saveShippingInfo?.pinCode ?? ""} ${saveShippingInfo?.country ?? ""}`;
 
   const proceedToPayment = () => {
     const data = {
@@ -51,7 +54,7 @@ const ConfirmOrder = ({ history }) => {
               </div>
               <div>
                 <p>Phone:</p>
-                <span>{saveShippingInfo.phoneNo}</span>
+                <span>{saveShippingInfo?.phoneNo}</span>
               </div>
               <div>
                 <p>Address:</p>

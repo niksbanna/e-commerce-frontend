@@ -6,13 +6,30 @@ import Loader from "../layout/Loader/Loader";
 import { Link, useNavigate } from "react-router-dom";
 import MetaData from "../layout/MetaData";
 import LaunchIcon from "@mui/icons-material/Launch";
+import { ToastContainer, toast } from "react-toastify";
+
 
 export const MyOrders = () => {
+  const notifyAlert = () => {
+    toast.warning(`Please login to access this route.`, {
+      position: "bottom-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+  };
   const navigate = useNavigate()
+  const userName = localStorage.getItem('user');
   useEffect(() => {
-    if (!Object.keys(user ?? {}).length > 0) {
-      alert("Please login first.")
-      navigate('/login');
+    if (!userName) {
+      notifyAlert();
+      setTimeout(() => {
+        navigate('/login');
+      }, 3000)
     }
   }, [])
   const dispatch = useDispatch();
@@ -93,6 +110,18 @@ export const MyOrders = () => {
           />
         </div>
       )}
+      <ToastContainer
+        position="bottom-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
     </Fragment>
   );
 };
