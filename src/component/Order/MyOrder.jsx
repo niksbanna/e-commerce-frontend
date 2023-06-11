@@ -3,12 +3,18 @@ import { DataGrid } from "@mui/x-data-grid";
 import { useSelector, useDispatch } from "react-redux";
 import { clearErrors, myOrders } from "../../actions/orderAction";
 import Loader from "../layout/Loader/Loader";
-import { Link } from "react-router-dom";
-import Typography from "@material-ui/core/Typography";
+import { Link, useNavigate } from "react-router-dom";
 import MetaData from "../layout/MetaData";
 import LaunchIcon from "@mui/icons-material/Launch";
 
 export const MyOrders = () => {
+  const navigate = useNavigate()
+  useEffect(() => {
+    if (!Object.keys(user ?? {}).length > 0) {
+      alert("Please login first.")
+      navigate('/login');
+    }
+  }, [])
   const dispatch = useDispatch();
 
   const { loading, error, orders } = useSelector((state) => state.myOrders);
@@ -48,7 +54,7 @@ export const MyOrders = () => {
       type: "number",
       sortable: false,
       renderCell: (params) => {
-        const orderId = params.id; 
+        const orderId = params.id;
         return (
           <Link to={`/order/${orderId}`}>
             <LaunchIcon />
@@ -85,10 +91,6 @@ export const MyOrders = () => {
             className="myOrdersTable"
             autoHeight
           />
-
-          <Typography variant="h1" id="myOrdersHeading">
-            {user.name}
-          </Typography>
         </div>
       )}
     </Fragment>

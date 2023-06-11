@@ -80,7 +80,13 @@ const LoginSignup = () => {
       setUser({ ...user, [e.target.name]: e.target.value });
     }
   };
-const navigate = useNavigate()
+  const navigate = useNavigate()
+  const token = localStorage.getItem('token')
+  useEffect(() => {
+    if (token) {
+      navigate('/')
+    }
+  }, [])
   useEffect(() => {
     console.log("Error:", error);
     if (error) {
@@ -89,9 +95,7 @@ const navigate = useNavigate()
     }
     console.log(isAuthenticated);
     if (isAuthenticated) {
-      console.log("navigated")
       navigate("/account")
-      // navigate.push("/account"); // Commented out as navigate is not used
     }
   }, [error, dispatch, isAuthenticated]);
 
@@ -196,7 +200,7 @@ const navigate = useNavigate()
                   />
                 </div>
 
-                <div id="registerImage">
+                {/* <div id="registerImage">
                   <img src={avatarPreview} alt="Avatar Preview" />
                   <input
                     type="file"
@@ -204,7 +208,7 @@ const navigate = useNavigate()
                     accept="image/*"
                     onChange={registerDataChange}
                   />
-                </div>
+                </div> */}
                 <input type="submit" value="Register" className="signUpBtn" />
               </form>
             </div>

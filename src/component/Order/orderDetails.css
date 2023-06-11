@@ -1,81 +1,113 @@
-.orderDetailsPage {
-    /* Styles for the orderDetailsPage */
+/* orderDetails.css */
+
+.dashboard1 {
+  padding: 20px;
+}
+
+.dashboardContainer1 {
+  display: flex;
+  justify-content: space-around;
+  background: #fff;
+  border-radius: 4px;
+  padding: 20px;
+}
+
+.pageTitle {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.section {
+  margin-bottom: 30px;
+}
+
+.sectionTitle {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.orderSummary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.orderSummaryBox {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 10px;
+}
+
+.summaryLabel {
+  font-weight: bold;
+}
+
+.summaryValue {
+  margin-top: 5px;
+}
+
+.statusLabel {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 4px;
+  color: #fff;
+  font-weight: bold;
+}
+
+.greenColor {
+  background-color: #4caf50;
+}
+
+.redColor {
+  background-color: #f44336;
+}
+
+.orderItems {
+  margin-top: 20px;
+}
+
+.orderItem {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  flex-direction: column;
+}
+
+.itemImage {
+  display: flex;
+  align-items: center;
+  margin-right: 10px;
+}
+
+.itemImage img {
+  width: 20vmax;
+  height: 200px;
+  object-fit: cover;
+}
+
+.itemDetails {
+  flex: 1;
+}
+
+.itemName {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.itemPrice {
+  color: #888;
+  font-size: 14px;
+}
+
+@media screen and (max-width: 768px) {
+  .dashboardContainer {
+    flex-direction: column;
   }
-  
-  .orderDetailsContainer {
-    /* Styles for the orderDetailsContainer */
-  }
-  
-  .orderDetailsContainerBox1 {
-    /* Styles for orderDetailsContainerBox1 */
-    background-color: #f2f2f2;
-    padding: 10px;
-    margin-bottom: 20px;
-  }
-  
-  .orderDetailsContainerBox2 {
-    /* Styles for orderDetailsContainerBox2 */
-    background-color: #f8f8f8;
-    padding: 10px;
-    margin-bottom: 20px;
-  }
-  
-  .orderDetailsContainerBox3 {
-    /* Styles for orderDetailsContainerBox3 */
-    background-color: #f2f2f2;
-    padding: 10px;
-    margin-bottom: 20px;
-  }
-  
-  .orderDetailsContainerBox1 div,
-  .orderDetailsContainerBox2 div,
-  .orderDetailsContainerBox3 div {
-    /* Styles for the inner divs within the container boxes */
+
+  .itemImage {
+    margin-right: 0;
     margin-bottom: 10px;
   }
-  
-  .orderDetailsContainerBox1 p,
-  .orderDetailsContainerBox2 p,
-  .orderDetailsContainerBox3 p {
-    /* Styles for the paragraph tags within the container boxes */
-    margin-bottom: 5px;
-    font-weight: bold;
-  }
-  
-  .orderDetailsContainerBox1 span,
-  .orderDetailsContainerBox2 span,
-  .orderDetailsContainerBox3 span {
-    /* Styles for the span tags within the container boxes */
-    font-weight: normal;
-  }
-  
-  .orderDetailsCartItems {
-    /* Styles for the orderDetailsCartItems */
-  }
-  
-  .orderDetailsCartItemsContainer {
-    /* Styles for the orderDetailsCartItemsContainer */
-  }
-  
-  .orderDetailsCartItemsContainer div {
-    /* Styles for the individual cart items within the container */
-    margin-bottom: 10px;
-  }
-  
-  .orderDetailsCartItemsContainer img {
-    /* Styles for the product images within the cart items */
-    width: 50px;
-    height: 50px;
-    margin-right: 10px;
-  }
-  
-  .orderDetailsCartItemsContainer a {
-    /* Styles for the product links within the cart items */
-    font-weight: bold;
-  }
-  
-  .orderDetailsCartItemsContainer span {
-    /* Styles for the spans within the cart items */
-    font-weight: normal;
-  }
-  
+}

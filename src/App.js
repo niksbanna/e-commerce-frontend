@@ -1,11 +1,9 @@
-// import Header from "./components/layout/Header/Header.jsx";
 import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import WebFont from "webfontloader";
 import React from "react";
 // import Loader from "./components/Loader/Loader.jsx";
 // import Footer from "./components/layout/Footer/Footer.jsx";
-// import ProductDetails from "./components/Product/ProductDetail?s"
 import LoginSignup from "./component/User/LoginSignup";
 // import Home from "./component/Home/Home";
 import store from "./store"
@@ -25,8 +23,12 @@ import Home from "./component/Home/Home";
 import Product from "./component/Home/ProductCard";
 import Loader from "./component/layout/Loader/Loader";
 import OrderDetails from "./component/Order/orderDetails";
-const  App=()=> {
+import Header from "./component/layout/Header/Header";
+import ProductDetails from "./component/Product/ProductDetails";
+import Dashboard from "./component/admin/Dashboard";
+const App = () => {
   const { isAuthenticated, user } = useSelector((state) => state.user);
+  console.log('isauthuser', isAuthenticated, user)
 
   React.useEffect(() => {
     WebFont.load({
@@ -35,45 +37,45 @@ const  App=()=> {
       },
     });
 
-    // store.dispatch(loadUser());
-  },[]);
+    store.dispatch(loadUser());
+  }, []);
 
 
   return (
     <>
-      <Router> 
-        
-        {/* <Header/> */}
+      <Router>
+
+        <Header />
         {/* {isAuthenticated && <UserOptions user={user} />}  */}
-        <Routes> 
-      
-      
-       <Route  path="/" element={<Home />} /> 
-       <Route  path="/about" element={<About />} /> 
-       <Route  path="/notfound" element={<NotFound />} /> 
-       <Route  path="/contact" element={<Contact />} /> 
-       <Route  path="/dashboard" element={<Contact />} /> 
-       <Route  path="/product" element={<Product />} /> 
-       <Route path='/loader' element={<Loader />} /> 
-       
-       <Route path="/login" element={<LoginSignup/>} />
-       <Route path="/orders" element={<MyOrders/>} />
-      
-       <Route path="/account" element={<Profile/>} />
-       <Route path="/shipping" element={<Shipping/>} />
-       <Route path="/order/confirm" element={<ConfirmOrder/>} />
-       {/* <ProtectedRoute path="/me/update" element={<UpdateProfile/>} /> */}
-       <Route  path="/success" element={<OrderSuccess/>} />
+        <Routes>
 
-       {/* <Route path="/useroption" element={<UserOptions/>} /> */}
 
-       {/* <Route path='/product/:id' element={<ProductDetails />} />  */}
-       <Route path="/order/:id" element={<OrderDetails />} />
-       </Routes>
-      </Router> 
-    
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/notfound" element={<NotFound />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/product" element={<Product />} />
+          <Route path='/loader' element={<Loader />} />
 
-      
+          <Route path="/login" element={<LoginSignup />} />
+          <Route path="/orders" element={<MyOrders user={user} />} />
+
+          <Route path="/account" element={<Profile />} />
+          <Route path="/shipping" element={<Shipping />} />
+          <Route path="/order/confirm" element={<ConfirmOrder />} />
+          {/* <ProtectedRoute path="/me/update" element={<UpdateProfile/>} /> */}
+          <Route path="/success" element={<OrderSuccess />} />
+
+          {/* <Route path="/useroption" element={<UserOptions/>} /> */}
+
+          <Route path='/product/:id' element={<ProductDetails />} />
+          <Route path="/order/:id" element={<OrderDetails />} />
+        </Routes>
+      </Router>
+
+
+
     </>
   );
 }

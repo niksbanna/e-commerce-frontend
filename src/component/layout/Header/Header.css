@@ -1,11 +1,26 @@
-.speedDial {
-    position: fixed;
-    right: 3vmax;
-    top: 3vmax;
-  }
-  
-  .speedDialIcon {
-    width: 56px;
-    height: 56px;
-    border-radius: 100%;
-  }
+.navbar-main {
+  display: flex;
+  align-items: center;
+  background: linear-gradient(to right, #635dc0, #3027ae);
+  font-family: Helvetica;
+  font-weight: 300;
+}
+
+.navbar__title {
+  margin-right: auto;
+  font-size: 1rem;
+  padding: 12px 16px;
+}
+
+.navbar__item {
+  padding: 16px 16px;
+  font-size: 0.7rem;
+  cursor: pointer;
+  vertical-align: middle;
+  text-decoration: none;
+  color: white;
+}
+
+.navbar__item:hover {
+  opacity: 0.7;
+}

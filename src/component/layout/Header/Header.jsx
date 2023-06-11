@@ -1,43 +1,32 @@
-// import React from "react";
-// import { ReactNavbar } from 'overlay-navbar';
-// import logo from "../../images/logo.png";
+import { Link, useNavigate } from "react-router-dom";
+import "./Header.css";
+import { useDispatch } from "react-redux";
+import { logout } from "../../../actions/userAction";
+const Header = () => {
+    const userName = localStorage.getItem('user');
+    const dispatch = useDispatch();
+    const navigate = useNavigate()
+    const handlelogout = () => {
+        dispatch(logout())
+        navigate('/login')
+
+    }
+    return (
+        <header className='navbar-main'>
+            <Link to={"/"} className='navbar__title navbar__item' >E-commerce</Link>
+            <Link to={"/about"} className='navbar__item'>About</Link>
+            <Link to={"/contact"} className='navbar__item'>Contact Us</Link>
+            <Link to={"/dashboard"} className='navbar__item'>Dashboard</Link>
+            <Link to={"/orders"} className='navbar__item'>My Orders</Link>
+            {userName ? (
+                <Link to={"/login"} onClick={handlelogout} className='navbar__item'>Logout</Link>
+            ) : (
+                <Link to={"/login"} className='navbar__item'>Login/SignUp</Link>
+            )}
 
 
-// const Header = () => {
-//   return (
-//   <ReactNavbar   
-//   burgerColorHover= "#eb4034"
-//   logo={logo}
-//   logoWidth= "20vmax"
-//   navColor1= "rgba(0,0,0,0.4)"
-//   logoHoverSize= "10px"
-//   logoHoverColor= "#eb4034"
-//   link1Text= "Home"
-//   link2Text= "Product"
-//   link3Text= "Contact"
-//   link4Text= "About"
-//   link1Url= "/"
-//   link2Url= "/product"
-//   link3Url= "/contact"
-//   link4Url= "/about"
-//   link1Size= "1.3vmax"
-//   link1Color= "rgba(35, 35, 35,0.8)"
-//   nav1justifyContent= "flex-end"
-//   nav2justifyContent= "flex-end"
-//   nav3justifyContent= "flex-start"
-//   nav4justifyContent= "flex-start"
-//   link1ColorHover= "#eb4034"
-//   link1Margin= "1vmax"
- 
-//   profileIconColor= "rgba(35, 35, 35,0.8)"
-//   searchIconColor= "rgba(35, 35, 35,0.8)"
-//   cartIconColor= "rgba(35, 35, 35,0.8)"
-//   profileIconColorHover= "#eb4034"
-//   searchIconColorHover= "#eb4034"
-//   cartIconColorHover= "#eb4034"
-//   cartIconMargin= "1vmax"
-//  />
-//  );
-// };
 
-// export default Header;
+        </header>
+    )
+}
+export default Header;

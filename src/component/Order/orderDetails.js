@@ -2,8 +2,7 @@ import React, { Fragment, useEffect } from "react";
 import "./orderDetails.css";
 import { useSelector, useDispatch } from "react-redux";
 import MetaData from "../layout/MetaData";
-import { Link, useParams } from "react-router-dom";
-import { Typography } from "@material-ui/core";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { getOrderDetails } from "../../actions/orderAction";
 import Loader from "../layout/Loader/Loader";
 
@@ -11,99 +10,96 @@ const OrderDetails = () => {
   const { id } = useParams();
   const { order, error, loading } = useSelector((state) => state.orderDetails);
   const dispatch = useDispatch();
+  const navigate = useNavigate()
 
   useEffect(() => {
+    console.log('order', order, loading)
+    if (!loading && !Object?.keys(order ?? {}).length > 0) {
+      alert("Please login first.")
+      navigate('/login')
+    }
     dispatch(getOrderDetails(id));
   }, [dispatch, error, id]);
 
   return (
     <Fragment>
-      {loading ? (
-        <Loader />
-      ) : (
-        <Fragment>
-          <MetaData title="Order Details" />
-          <div className="orderDetailsPage">
-            <div className="orderDetailsContainer">
-              <Typography component="h1">
-                Order #{order && order._id}
-              </Typography>
-              <Typography>Shipping Info</Typography>
-              <div className="orderDetailsContainerBox1">
-<div>
-                  <p>Name:</p>
-                  <span>{order?.user?.name}</span>
-                </div>                
-                <div>
-                  <p>Phone:</p>
-                  <span>{order?.shippingInfo?.phoneNo}</span>
+      <MetaData title="Order Details" />
+      <div className="dashboard1">
+        <h1 className="pageTitle">Order #{order && order._id}</h1>
+        <div className="dashboardContainer1">
+          <div className="second">
+            <div className="section">
+              <h2 className="sectionTitle">Order Items</h2>
+              <div className="orderItems">
+                {order?.orderItems?.map((item) => (
+                  <div className="orderItem" key={item.product}>
+                    <div className="itemImage">
+                      <img src={item.image} alt="Product" />
+                    </div>
+                    <div className="itemDetails">
+                      <Link to={`/product/${item.product}`} className="itemName">{item.name}</Link>
+                      <div className="itemPrice">
+                        {item.quantity} X ₹{item.price} = <b>₹{item.price * item.quantity}</b>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+          <div className="first">
+            <div className="section">
+              <h2 className="sectionTitle">Shipping Info</h2>
+              <div className="orderSummary">
+                <div className="orderSummaryBox">
+                  <p className="summaryLabel">Name:</p>
+                  <span className="summaryValue">{order?.user?.name}</span>
                 </div>
-                <div>
-                  <p>Address:</p>
-                  <span>
+                <div className="orderSummaryBox">
+                  <p className="summaryLabel">Phone:</p>
+                  <span className="summaryValue">{order?.shippingInfo?.phoneNo}</span>
+                </div>
+                <div className="orderSummaryBox">
+                  <p className="summaryLabel">Address:</p>
+                  <span className="summaryValue">
                     {order?.shippingInfo &&
                       `${order.shippingInfo.address}, ${order.shippingInfo.city}, ${order.shippingInfo.state}, ${order.shippingInfo.pinCode}, ${order.shippingInfo.country}`}
                   </span>
                 </div>
               </div>
-              
-              <div className="orderDetailsContainerBox2">
-              <Typography>Payment</Typography>
-                <div>
-                  <p
-                    className={
-                      order?.paymentInfo?.status === "succeeded"
-                        ? "greenColor"
-                        : "redColor"
-                    }
-                  >
-                    {order?.paymentInfo?.status === "succeeded"
-                      ? "PAID"
-                      : "NOT PAID"}
+            </div>
+
+            <div className="section">
+              <h2 className="sectionTitle">Payment</h2>
+              <div className="orderSummary">
+                <div className="orderSummaryBox">
+                  <p className={`statusLabel ${order?.paymentInfo?.status === "succeeded" ? "greenColor" : "redColor"}`}>
+                    {order?.paymentInfo?.status === "succeeded" ? "PAID" : "NOT PAID"}
                   </p>
                 </div>
-
-                <div>
-                  <p>Amount:</p>
-                  <span>{order?.totalPrice}</span>
+                <div className="orderSummaryBox">
+                  <p className="summaryLabel">Amount:</p>
+                  <span className="summaryValue">{order?.totalPrice}</span>
                 </div>
               </div>
+            </div>
 
-         
-              <div className="orderDetailsContainerBox3">
-              <Typography>Order Status</Typography>
-                <div>
-                  <p
-                    className={
-                      order?.orderStatus === "Delivered"
-                        ? "greenColor"
-                        : "redColor"
-                    }
-                  >
+            <div className="section">
+              <h2 className="sectionTitle">Order Status</h2>
+              <div className="orderSummary">
+                <div className="orderSummaryBox">
+                  <p className={`statusLabel ${order?.orderStatus === "Delivered" ? "greenColor" : "redColor"}`}>
                     {order?.orderStatus}
                   </p>
                 </div>
               </div>
             </div>
 
-            <div className="orderDetailsCartItems">
-              <Typography>Order Items:</Typography>
-              <div className="orderDetailsCartItemsContainer">
-                {order?.orderItems?.map((item) => (
-                  <div key={item.product}>
-                    <img src={item.image} alt="Product" />
-                    <Link to={`/product/${item.product}`}>{item.name}</Link>{" "}
-                    <span>
-                      {item.quantity} X ₹{item.price} ={" "}
-                      <b>₹{item.price * item.quantity}</b>
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </div>
+
           </div>
-        </Fragment>
-      )}
+
+        </div>
+      </div>
     </Fragment>
   );
 };

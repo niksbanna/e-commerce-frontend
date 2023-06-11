@@ -23,8 +23,8 @@ const Sidebar = () => {
       </Link>
       <Link>
         <ParkIcon
-          defaultCollapseIcon={<ExpandMoreIcon />}
-          defaultExpandIcon={<ImportExportIcon />}
+          defaultcollapseicon={<ExpandMoreIcon />}
+          defaultexpandicon={<ImportExportIcon />}
         >
           <ParkIcon nodeId="1" label="Products">
             <Link to="/admin/products">

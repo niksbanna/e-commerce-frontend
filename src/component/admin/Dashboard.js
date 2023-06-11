@@ -2,22 +2,25 @@ import React, { useEffect } from "react";
 import Sidebar from "./Sidebar.js";
 import "./Dashboard.css";
 import { Typography } from "@material-ui/core";
-import { Link } from "react-router-dom";
-import { Doughnut, Line } from "react-chartjs-2";
+import { Link, useNavigate } from "react-router-dom";
+// import { Doughnut, Line } from "react-chartjs-2";
 import { useSelector, useDispatch } from "react-redux";
 import { getAdminProduct } from "../../actions/productAction";
 import { getAllOrders } from "../../actions/orderAction.jsx";
 import { getAllUsers } from "../../actions/userAction.jsx";
-// 
+import MetaData from "../layout/MetaData";
+
+
+// Import statements...
+
 const Dashboard = () => {
   const dispatch = useDispatch();
 
   const { products } = useSelector((state) => state.products);
 
-  const  orders = useSelector((state) => state.getAllOrders);
-  console.log(orders,'orders')
+  const orders = useSelector((state) => state.orders);
 
-  const  users  = useSelector((state) => state.getAllUsers);
+  const users = useSelector((state) => state.users);
 
   let outOfStock = 0;
 
@@ -27,7 +30,14 @@ const Dashboard = () => {
         outOfStock += 1;
       }
     });
-
+  const token = localStorage.getItem('token');
+  const navigate = useNavigate()
+  useEffect(() => {
+    if (!token) {
+      alert("Please login first")
+      navigate('/login');
+    }
+  })
   useEffect(() => {
     dispatch(getAdminProduct());
     dispatch(getAllOrders());
@@ -41,6 +51,7 @@ const Dashboard = () => {
     });
 
   const lineState = {
+    type: 'line',
     labels: ["Initial Amount", "Amount Earned"],
     datasets: [
       {
@@ -50,9 +61,20 @@ const Dashboard = () => {
         data: [0, totalAmount],
       },
     ],
+    options: {
+      scales: {
+        x: {
+          type: 'category',
+        },
+        y: {
+          beginAtZero: true,
+        },
+      },
+    },
   };
 
   const doughnutState = {
+    type: 'doughnut',
     labels: ["Out of Stock", "InStock"],
     datasets: [
       {
@@ -65,6 +87,7 @@ const Dashboard = () => {
 
   return (
     <div className="dashboard">
+      <MetaData title="Dashboard - Admin Panel" />
       <Sidebar />
 
       <div className="dashboardContainer">
@@ -92,13 +115,13 @@ const Dashboard = () => {
           </div>
         </div>
 
-        <div className="lineChart">
+        {/* <div className="lineChart">
           <Line data={lineState} />
         </div>
 
         <div className="doughnutChart">
           <Doughnut data={doughnutState} />
-        </div>
+        </div> */}
       </div>
     </div>
   );
