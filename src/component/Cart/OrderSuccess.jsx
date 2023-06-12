@@ -11,6 +11,7 @@ const OrderSuccess = () => {
 
       <Typography>Your Order has been Placed successfully </Typography>
       <Link to="/orders">View Orders</Link>
+      <Link to="/">Go Home</Link>
     </div>
   );
 };

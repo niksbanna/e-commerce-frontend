@@ -1,16 +1,17 @@
-import React, { Fragment } from "react";
+import React from "react";
 import CheckoutSteps from "../Cart/CheckoutSteps";
 import { useDispatch, useSelector } from "react-redux";
 import MetaData from "../../component/layout/MetaData";
 import "./ConfirmOrder.css";
-import { Link } from "react-router-dom";
-import { Typography } from "@material-ui/core";
+import { Link, useNavigate } from "react-router-dom";
 import { loadUser } from "../../actions/userAction";
+import { createOrder } from "../../actions/orderAction";
+import { emptyCart } from "../../actions/cartAction"
 
-const ConfirmOrder = ({ history }) => {
-  const { saveShippingInfo, cartItems } = useSelector((state) => state.cart);
+const ConfirmOrder = () => {
+  const { saveShippingInfo, shippingInfo, cartItems } = useSelector((state) => state.cart);
   const dispatch = useDispatch()
-  const user = dispatch(loadUser());
+  const { user } = useSelector((state) => state.user);
   console.log("user", user, 'shippininfo', saveShippingInfo)
 
   const subtotal = cartItems.reduce(
@@ -24,19 +25,33 @@ const ConfirmOrder = ({ history }) => {
 
   const totalPrice = subtotal + tax + shippingCharges;
 
-  const address = `${saveShippingInfo?.address ?? ""} ${saveShippingInfo?.city ?? ""} ${saveShippingInfo?.state ?? ""} ${saveShippingInfo?.pinCode ?? ""} ${saveShippingInfo?.country ?? ""}`;
+  const address = `${saveShippingInfo?.address ?? "32 New Street"} ${saveShippingInfo?.city ?? "Udaipur"} ${saveShippingInfo?.state ?? "Rajasthan"} ${saveShippingInfo?.pinCode ?? "311001"} ${saveShippingInfo?.country ?? "India"}`;
+
+  const navigate = useNavigate();
+
+  const orderInfo = {
+    subtotal,
+    shippingCharges,
+    tax,
+    totalPrice,
+  };
+
+  const order = {
+    shippingInfo,
+    orderItems: cartItems,
+    itemsPrice: orderInfo.subtotal,
+    taxPrice: orderInfo.tax,
+    shippingPrice: orderInfo.shippingCharges,
+    totalPrice: orderInfo.totalPrice,
+  };
+
 
   const proceedToPayment = () => {
-    const data = {
-      subtotal,
-      shippingCharges,
-      tax,
-      totalPrice,
-    };
 
-    sessionStorage.setItem("orderInfo", JSON.stringify(data));
+    dispatch(createOrder(order));
+    dispatch(emptyCart())
+    navigate('/success')
 
-    history.push("/process/payment");
   };
 
   return (
@@ -46,7 +61,7 @@ const ConfirmOrder = ({ history }) => {
       <div className="confirmOrderPage">
         <div>
           <div className="confirmshippingArea">
-            <Typography>Shipping Info</Typography>
+            <div>Shipping Info</div>
             <div className="confirmshippingAreaBox">
               <div>
                 <p>Name:</p>
@@ -63,7 +78,7 @@ const ConfirmOrder = ({ history }) => {
             </div>
           </div>
           <div className="confirmCartItems">
-            <Typography>Your Cart Items:</Typography>
+            <div>Your Cart Items:</div>
             <div className="confirmCartItemsContainer">
               {cartItems &&
                 cartItems.map((item) => (
@@ -84,7 +99,7 @@ const ConfirmOrder = ({ history }) => {
         {/*  */}
         <div>
           <div className="orderSummary">
-            <Typography>Order Summery</Typography>
+            <div>Order Summery</div>
             <div>
               <div>
                 <p>Subtotal:</p>

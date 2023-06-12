@@ -2,11 +2,13 @@ import {
   ADD_TO_CART,
   REMOVE_CART_ITEM,
   SAVE_SHIPPING_INFO,
+  LOGOUT
 } from "../constants/cartConstants";
 import axios from "axios";
 
 // Add to Cart
 export const addItemsToCart = (id, quantity) => async (dispatch, getState) => {
+  console.log('add item to cart action');
   const { data } = await axios.get(`http://${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT}/api/products/${id}`);
 
   dispatch({
@@ -42,4 +44,13 @@ export const saveShippingInfo = (data) => async (dispatch) => {
   });
 
   localStorage.setItem("shippingInfo", JSON.stringify(data));
+};
+
+export const emptyCart = () => async (dispatch) => {
+  dispatch({
+    type: LOGOUT,
+    payload: '',
+  });
+  localStorage.removeItem('cartItems');
+
 };

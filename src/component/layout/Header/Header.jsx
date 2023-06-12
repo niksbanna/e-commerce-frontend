@@ -4,22 +4,26 @@ import { logout } from "../../../actions/userAction";
 import CartIcon from "./cartIcon.png";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { emptyCart } from "../../../actions/cartAction";
 
 const Header = () => {
     const userName = localStorage.getItem('user');
     const dispatch = useDispatch();
     const navigate = useNavigate()
     const { cartItems } = useSelector((state) => state.cart);
-    console.log('cartitems', cartItems)
+    const [cartCount, setCartCount] = useState(0);
     const handlelogout = () => {
+        dispatch(emptyCart())
         dispatch(logout())
         navigate('/login')
 
     }
 
-    const [cartCount, setCartCount] = useState(0);
     useEffect(() => {
-        setCartCount(cartItems?.reduce((acc, item) => acc + item.quantity, 0));
+        cartItems && setCartCount(cartItems?.reduce((acc, item) => acc + item.quantity, 0));
+        if (!cartItems) {
+            setCartCount(0);
+        }
     });
     return (
         <header className='navbar-main'>

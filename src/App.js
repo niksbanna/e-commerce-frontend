@@ -18,6 +18,9 @@ import OrderDetails from "./component/Order/orderDetails";
 import Header from "./component/layout/Header/Header";
 import ProductDetails from "./component/Product/ProductDetails";
 import Dashboard from "./component/admin/Dashboard";
+import ProductList from "./component/admin/ProductList";
+import OrderList from "./component/admin/OrderList"
+import ProcessOrder from "./component/admin/ProcessOrder";
 
 
 const App = () => {
@@ -54,6 +57,13 @@ const App = () => {
           <Route path="/success" element={<OrderSuccess />} />
           <Route path='/product/:id' element={<ProductDetails />} />
           <Route path="/order/:id" element={<OrderDetails />} />
+
+          <Route path="/admin/products" element={<ProductList />} />
+          <Route path="/admin/orders" element={<OrderList />} />
+          <Route path="/admin/order/:id" element={<ProcessOrder />} />
+          <Route path="/admin/users" element={<OrderList />} />
+
+
 
         </Routes>
       </Router>

@@ -25,12 +25,12 @@ import {
 } from "../constants/userConstants";
 
 import axios from 'axios';
-const token = localStorage.getItem('token');
 
 
 export const login = (email, password) => async (dispatch) => {
 
   try {
+
     dispatch({ type: LOGIN_REQUEST });
 
     const config = { headers: { "Content-Type": "application/json" } };
@@ -76,6 +76,8 @@ export const register = (userData) => async (dispatch) => {
 // Load User
 export const loadUser = () => async (dispatch) => {
   try {
+    const token = localStorage.getItem('token');
+
     dispatch({ type: LOAD_USER_REQUEST });
 
     const { data } = await axios.get(`http://${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT}/api/users/me `, {
@@ -98,6 +100,7 @@ export const logout = () => async (dispatch) => {
 
     localStorage.removeItem('token');
     localStorage.removeItem('user');
+    localStorage.removeItem('cartItems');
     dispatch({ type: LOGOUT_SUCCESS });
   } catch (error) {
     dispatch({ type: LOGOUT_FAIL, payload: "Something went wrong." });
@@ -107,9 +110,11 @@ export const logout = () => async (dispatch) => {
 // Update Profile
 export const updateProfile = (userData) => async (dispatch) => {
   try {
+    const token = localStorage.getItem('token');
+
     dispatch({ type: UPDATE_PROFILE_REQUEST });
 
-    const config = { headers: { "Content-Type": "multipart/form-data" } };
+    const config = { headers: { "Content-Type": "multipart/form-data", Authorization: `Bearer ${token}` } };
 
     const { data } = await axios.put(`http://${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT}/api/users/me/update`, userData, config);
 
@@ -127,6 +132,8 @@ export const updateProfile = (userData) => async (dispatch) => {
 
 export const getAllUsers = () => async (dispatch) => {
   try {
+    const token = localStorage.getItem('token');
+
     dispatch({ type: ALL_USERS_REQUEST });
     const { data } = await axios.get(`http://${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT}/api/users/admin/users`, {
       headers: {
@@ -143,8 +150,14 @@ export const getAllUsers = () => async (dispatch) => {
 // get  User Details
 export const getUserDetails = (id) => async (dispatch) => {
   try {
+    const token = localStorage.getItem('token');
+
     dispatch({ type: USER_DETAILS_REQUEST });
-    const { data } = await axios.get(`/api/v1/admin/user/${id}`);
+    const { data } = await axios.get(`/api/v1/admin/user/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
 
     dispatch({ type: USER_DETAILS_SUCCESS, payload: data.user });
   } catch (error) {

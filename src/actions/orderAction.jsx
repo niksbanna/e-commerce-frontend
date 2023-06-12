@@ -21,11 +21,11 @@ import {
 } from "../constants/orderConstants";
 
 import axios from "axios";
-const token = localStorage.getItem('token');
-console.log('token in order action', token)
 // Create Order
 export const createOrder = (order) => async (dispatch) => {
   try {
+    const token = localStorage.getItem('token');
+
     dispatch({ type: CREATE_ORDER_REQUEST });
 
     const { data } = await axios.post(`http://${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT}/api/orders/new`, order, {
@@ -46,6 +46,8 @@ export const createOrder = (order) => async (dispatch) => {
 // My Orders
 export const myOrders = () => async (dispatch) => {
   try {
+    const token = localStorage.getItem('token');
+
     dispatch({ type: MY_ORDERS_REQUEST });
 
     const { data } = await axios.get(`http://${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT}/api/orders/me`, {
@@ -66,6 +68,8 @@ export const myOrders = () => async (dispatch) => {
 // Get All Orders (admin)
 export const getAllOrders = () => async (dispatch) => {
   try {
+    const token = localStorage.getItem('token');
+
     dispatch({ type: ALL_ORDERS_REQUEST });
 
     const { data } = await axios.get(`http://${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT}/api/orders/admin`, {
@@ -86,6 +90,8 @@ export const getAllOrders = () => async (dispatch) => {
 // Update Order
 export const updateOrder = (id, order) => async (dispatch) => {
   try {
+    const token = localStorage.getItem('token');
+
     dispatch({ type: UPDATE_ORDER_REQUEST });
 
     const { data } = await axios.put(
@@ -110,6 +116,8 @@ export const updateOrder = (id, order) => async (dispatch) => {
 // Delete Order
 export const deleteOrder = (id) => async (dispatch) => {
   try {
+    const token = localStorage.getItem('token');
+
     dispatch({ type: DELETE_ORDER_REQUEST });
 
     const { data } = await axios.delete(`http://${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT}/api/orders/admin/${id}`, {
@@ -130,6 +138,8 @@ export const deleteOrder = (id) => async (dispatch) => {
 // Get Order Details
 export const getOrderDetails = (id) => async (dispatch) => {
   try {
+    const token = localStorage.getItem('token');
+
     dispatch({ type: ORDER_DETAILS_REQUEST });
 
     const { data } = await axios.get(`http://${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT}/api/orders/${id}`, {
