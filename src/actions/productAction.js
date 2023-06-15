@@ -176,10 +176,11 @@ export const clearErrors = () => async (dispatch) => {
 
 export const newReview = (reviewData) => async (dispatch) => {
   try {
+    const token = localStorage.getItem('token');
     dispatch({ type: NEW_REVIEW_REQUEST });
 
     const config = {
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
     };
 
     const { data } = await axios.put(`http://${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT}/api/products/review`, reviewData, config);

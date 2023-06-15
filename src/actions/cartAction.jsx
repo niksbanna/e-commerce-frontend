@@ -8,7 +8,7 @@ import axios from "axios";
 
 // Add to Cart
 export const addItemsToCart = (id, quantity) => async (dispatch, getState) => {
-  console.log('add item to cart action');
+  console.log('add item to cart', id, quantity);
   const { data } = await axios.get(`http://${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT}/api/products/${id}`);
 
   dispatch({

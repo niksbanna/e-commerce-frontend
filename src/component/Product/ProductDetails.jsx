@@ -1,7 +1,7 @@
 import React, { useEffect, Fragment, useState } from "react";
 import "./ProductDetails.css";
 import { useSelector, useDispatch } from "react-redux";
-import { getProductDetails, getProduct } from "../../actions/productAction.js";
+import { getProductDetails, getProduct, newReview } from "../../actions/productAction.js";
 import { useNavigate, useParams } from "react-router-dom";
 import ReviewCard from "./ReviewCard.js";
 import Loader from "../layout/Loader/Loader";
@@ -60,6 +60,7 @@ const ProductDetails = () => {
   };
 
   const addToCartHandler = () => {
+    console.log("hello", id, quantity);
     dispatch(addItemsToCart(id, quantity));
     notifySuccess(quantity)
   };
@@ -69,10 +70,12 @@ const ProductDetails = () => {
   };
 
   const reviewSubmitHandler = () => {
+    console.log("submit rating")
     const myForm = new FormData();
     myForm.set("rating", rating);
     myForm.set("comment", comment);
     myForm.set("productId", id);
+    dispatch(newReview(myForm));
 
     setOpen(false);
   };
@@ -185,7 +188,7 @@ const ProductDetails = () => {
             <DialogContent className="submitDialog">
               <Rating
                 name="review-rating" // Unique name for the Rating component in the dialog
-                value={rating}
+                value={parseInt(rating)}
                 onChange={(e) => setRating(e.target.value)}
                 size="large"
               />

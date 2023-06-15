@@ -11,7 +11,6 @@ import { ToastContainer, toast } from "react-toastify";
 const Home = () => {
   const dispatch = useDispatch();
   const { loading, error, products, productCount } = useSelector((state) => state.products);
-  console.log(loading, error, products, productCount);
   const userName = localStorage.getItem('user');
   const notifyAlert = () => {
     toast.error(`Error: ${error}`, {

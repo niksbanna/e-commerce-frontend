@@ -26,25 +26,27 @@ const Header = () => {
         }
     });
     return (
-        <header className='navbar-main'>
-            <Link to={"/"} className='navbar__title navbar__item' >E-commerce</Link>
-            <Link to={"/about"} className='navbar__item'>About</Link>
-            <Link to={"/contact"} className='navbar__item'>Contact Us</Link>
-            <Link to={"/dashboard"} className='navbar__item'>Dashboard</Link>
-            <Link to={"/orders"} className='navbar__item'>My Orders</Link>
+        <div className="top">
+            <header className='navbar-main'>
+                <Link to={"/"} className='navbar__title navbar__item' >E-commerce</Link>
+                <Link to={"/about"} className='navbar__item'>About</Link>
+                <Link to={"/contact"} className='navbar__item'>Contact Us</Link>
+                <Link to={"/dashboard"} className='navbar__item'>Dashboard</Link>
+                <Link to={"/orders"} className='navbar__item'>My Orders</Link>
 
-            {userName ? (<>
-                <img className="cart-icon" src={CartIcon} onClick={() => navigate("/order/confirm")} alt="cart icon" />
-                <span className="cart-count">{cartCount}</span>
-                <Link to={"/login"} onClick={handlelogout} className='navbar__item'>Logout</Link>
-            </>
-            ) : (
-                <Link to={"/login"} className='navbar__item'>Login/SignUp</Link>
-            )}
+                {userName ? (<>
+                    <img className="cart-icon" src={CartIcon} onClick={() => navigate("/order/confirm")} alt="cart icon" />
+                    <span className="cart-count">{cartCount}</span>
+                    <Link to={'/login'} onClick={handlelogout} className='navbar__item'>Logout</Link>
+                </>
+                ) : (
+                    <Link to={"/login"} className='navbar__item'>Login/SignUp</Link>
+                )}
 
 
 
-        </header>
+            </header>
+        </div>
     )
 }
 export default Header;

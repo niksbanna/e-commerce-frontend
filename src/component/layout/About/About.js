@@ -3,6 +3,7 @@ import "./aboutSection.css";
 import { Button, Typography, Avatar } from "@material-ui/core";
 import YouTubeIcon from "@mui/icons-material/YouTube";
 import InstagramIcon from "@mui/icons-material/Instagram";
+import logo from "./hoicko.jpeg";
 const About = () => {
   const visitInstagram = () => {
     window.location = "https://instagram.com/meabhisingh";
@@ -18,20 +19,19 @@ const About = () => {
           <div>
             <Avatar
               style={{ width: "10vmax", height: "10vmax", margin: "2vmax 0" }}
-              src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Creative-Tail-People-gentleman.svg/800px-Creative-Tail-People-gentleman.svg.png"
+              src={logo}
               alt="Founder"
             />
-            <Typography>Teams</Typography>
+            <Typography>Team Dev Warriors</Typography>
             <Button onClick={visitInstagram} color="primary">
               Visit Instagram
             </Button>
             <span>
-              Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ipsam
-              autem dignissimos deleniti, mollitia provident laboriosam?
+              We create responsive single page complete apps with server development.
             </span>
           </div>
           <div className="aboutSectionContainer2">
-            <Typography component="h2">Our Brands</Typography>
+            <Typography component="h2">HOICKO</Typography>
             <a href="https://www.youtube.com/" target="blank">
               <YouTubeIcon className="youtubeSvgIcon" />
             </a>
