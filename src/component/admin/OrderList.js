@@ -15,7 +15,7 @@ import {
 } from "../../actions/orderAction";
 import { DELETE_ORDER_RESET } from "../../constants/orderConstants";
 
-const OrderList = () => {
+const OrderList = ({ alert }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { orderId } = useParams();
@@ -28,6 +28,10 @@ const OrderList = () => {
   };
 
   useEffect(() => {
+
+    if (error) {
+      return alert(error, "error")
+    }
 
     if (isDeleted) {
       navigate("/admin/orders");

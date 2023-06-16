@@ -6,36 +6,27 @@ import Loader from "../layout/Loader/Loader";
 import { Link, useNavigate } from "react-router-dom";
 import MetaData from "../layout/MetaData";
 import LaunchIcon from "@mui/icons-material/Launch";
-import { ToastContainer, toast } from "react-toastify";
 
 
-export const MyOrders = () => {
-  const notifyAlert = () => {
-    toast.warning(`Please login to access this route.`, {
-      position: "bottom-right",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-    });
-  };
+export const MyOrders = ({ alert }) => {
+
   const navigate = useNavigate()
-  const userName = localStorage.getItem('user');
-  useEffect(() => {
-    if (!userName) {
-      notifyAlert();
-      setTimeout(() => {
-        navigate('/login');
-      }, 3000)
-    }
-  }, [])
+  const token = localStorage.getItem('token');
   const dispatch = useDispatch();
 
   const { loading, error, orders } = useSelector((state) => state.myOrders);
   const { user } = useSelector((state) => state.user);
+
+  useEffect(() => {
+    if (error) {
+      alert(error, "error")
+      dispatch(clearErrors());
+    }
+    if (!token) {
+      alert("Please login to access this route.", "error");
+      return navigate('/login');
+    }
+  }, [navigate, error])
 
   const columns = [
     { field: "id", headerName: "Order ID", minWidth: 300, flex: 1 },
@@ -45,7 +36,7 @@ export const MyOrders = () => {
       minWidth: 150,
       flex: 0.5,
       cellClassName: (params) => {
-        const status = params.row.status; // Access the 'status' field from the row
+        const status = params.row.status;
         return status === "Delivered" ? "greenColor" : "redColor";
       },
     },
@@ -89,7 +80,8 @@ export const MyOrders = () => {
   })) || [];
 
   useEffect(() => {
-    dispatch(myOrders());
+    if (token)
+      dispatch(myOrders());
   }, [dispatch, myOrders]);
 
   return (
@@ -110,18 +102,6 @@ export const MyOrders = () => {
           />
         </div>
       )}
-      <ToastContainer
-        position="bottom-center"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="light"
-      />
     </Fragment>
   );
 };

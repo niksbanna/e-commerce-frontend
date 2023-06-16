@@ -12,7 +12,7 @@ import Loader from "../layout/Loader/Loader";
 import { UPDATE_ORDER_RESET } from "../../constants/orderConstants";
 import "./processOrder.css";
 
-const ProcessOrder = () => {
+const ProcessOrder = ({ alert }) => {
     const { order, error, loading } = useSelector((state) => state.orderDetails);
     const { error: updateError, isUpdated } = useSelector((state) => state.order);
 
@@ -28,9 +28,13 @@ const ProcessOrder = () => {
         formData.set("status", status);
 
         dispatch(updateOrder(id, formData));
+        alert("Order updated successfully.")
     };
 
     useEffect(() => {
+        if (error) {
+            return alert(error, "error");
+        }
         if (updateError) {
             dispatch(clearErrors());
         }

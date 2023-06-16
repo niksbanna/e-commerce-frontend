@@ -29,17 +29,15 @@ import {
   DELETE_REVIEW_FAIL,
   CLEAR_ERROR
 } from '../constants/ProductConstants';
-export const getProduct = (keyword = "", currentPage = 1, price = [0, 400000], category, ratings) => async (dispatch) => {
+export const getProduct = (keyword = "", currentPage = 1, price = [0, 99999], category, ratings = 0) => async (dispatch) => {
   try {
     dispatch({
       type: ALL_PRODUCT_REQUEST,
     });
-    let link = `http://${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT}/api/products?keyword=${keyword}&page=${currentPage}&price[gte]=${price[0]}&ratings[gte]=0`
+    let link = `http://${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT}/api/products?keyword=${keyword}&page=${currentPage}&price[gte]=${price[0]}&ratings[gte]=${ratings}`
 
     if (category) {
-      link = `http://${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT}/api/products?keyword=${keyword}&page=${currentPage}&price[gte]=${price[0]}&price[lte]=${price[1]}`;
-      // &ratings[gte]=${ratings}
-      // &category=${category}&ratings[gte]=${ratings}s
+      link = `http://${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT}/api/products?keyword=${keyword}&page=${currentPage}&price[gte]=${price[0]}&price[lte]=${price[1]}&category=${category}&ratings[gte]=${ratings}`;
     }
     const { data } = await axios.get(link);
 
@@ -50,7 +48,7 @@ export const getProduct = (keyword = "", currentPage = 1, price = [0, 400000], c
   } catch (error) {
     dispatch({
       type: ALL_PRODUCT_FAIL,
-      payload: 'Something went wrong.',
+      payload: `${error.response.data.message || error.message}`,
     });
   }
 };
@@ -73,7 +71,7 @@ export function getProductDetails(id) {
     } catch (error) {
       dispatch({
         type: PRODUCT_DETAILS_FAIL,
-        payload: "Something went wrong.",
+        payload: `${error.response.data.message || error.message}`,
       });
     }
   };
@@ -91,16 +89,16 @@ export const getAdminProduct = () => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: ADMIN_PRODUCT_FAIL,
-      payload: "Something went wrong.",
+      payload: `${error.response.data.message || error.message}`,
     });
   }
 };
 export const createProduct = (productData) => async (dispatch) => {
   try {
     dispatch({ type: NEW_PRODUCT_REQUEST });
-
+    const token = localStorage.getItem('token');
     const config = {
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
     };
 
     const { data } = await axios.post(
@@ -116,7 +114,7 @@ export const createProduct = (productData) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: NEW_PRODUCT_FAIL,
-      payload: "Something went wrong.",
+      payload: `${error.response.data.message || error.message}`,
     });
   }
 };
@@ -125,9 +123,10 @@ export const createProduct = (productData) => async (dispatch) => {
 export const updateProduct = (id, productData) => async (dispatch) => {
   try {
     dispatch({ type: UPDATE_PRODUCT_REQUEST });
+    const token = localStorage.getItem('token');
 
     const config = {
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
     };
 
     const { data } = await axios.put(
@@ -143,7 +142,7 @@ export const updateProduct = (id, productData) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: UPDATE_PRODUCT_FAIL,
-      payload: "Something went wrong.",
+      payload: `${error.response.data.message || error.message}`,
     });
   }
 };
@@ -152,8 +151,14 @@ export const updateProduct = (id, productData) => async (dispatch) => {
 export const deleteProduct = (id) => async (dispatch) => {
   try {
     dispatch({ type: DELETE_PRODUCT_REQUEST });
+    const token = localStorage.getItem('token');
 
-    const { data } = await axios.delete(`http://${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT}/api/products/${id}`);
+
+    const { data } = await axios.delete(`http://${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT}/api/products/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
 
     dispatch({
       type: DELETE_PRODUCT_SUCCESS,
@@ -162,7 +167,7 @@ export const deleteProduct = (id) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: DELETE_PRODUCT_FAIL,
-      payload: "Something went wrong.",
+      payload: `${error.response.data.message || error.message}`,
     });
   }
 };
@@ -192,14 +197,16 @@ export const newReview = (reviewData) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: NEW_REVIEW_FAIL,
-      payload: "Something went wrong.",
+      payload: `${error.response.data.message || error.message}`,
     });
   }
 };
 
+
 // Get All Reviews of a Product
 export const getAllReviews = (id) => async (dispatch) => {
   try {
+
     dispatch({ type: ALL_REVIEW_REQUEST });
 
     const { data } = await axios.get(`http://${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT}/api/products/reviews?id=${id}`);
@@ -211,7 +218,7 @@ export const getAllReviews = (id) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: ALL_REVIEW_FAIL,
-      payload: "Something went wrong.",
+      payload: error.response.data.message,
     });
   }
 };
@@ -220,9 +227,14 @@ export const getAllReviews = (id) => async (dispatch) => {
 export const deleteReviews = (reviewId, productId) => async (dispatch) => {
   try {
     dispatch({ type: DELETE_REVIEW_REQUEST });
+    const token = localStorage.getItem('token');
 
     const { data } = await axios.delete(
-      `http://${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT}/api/products/reviews?id=${reviewId}&productId=${productId}`
+      `http://${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT}/api/products/reviews?id=${reviewId}&productId=${productId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }
     );
 
     dispatch({
@@ -232,7 +244,7 @@ export const deleteReviews = (reviewId, productId) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: DELETE_REVIEW_FAIL,
-      payload: "Something went wrong.",
+      payload: `${error.response.data.message || error.message}`,
     });
   }
 };

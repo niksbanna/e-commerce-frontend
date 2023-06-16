@@ -7,12 +7,11 @@ import MailIcon from "@mui/icons-material/Mail";
 import PersonIcon from "@mui/icons-material/Person";
 import { useDispatch, useSelector } from "react-redux";
 import { clearErrors, login, register } from "../../actions/userAction";
-import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 
 
-const LoginSignup = () => {
+const LoginSignup = ({ alert }) => {
 
   const { error, loading, isAuthenticated } = useSelector(
     (state) => state.user
@@ -20,18 +19,7 @@ const LoginSignup = () => {
 
 
   const dispatch = useDispatch();
-  const notifyAlert = () => {
-    toast.error(`Error: ${error}`, {
-      position: "bottom-right",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-    });
-  };
+
 
   const loginTab = useRef(null);
   const registerTab = useRef(null);
@@ -48,12 +36,10 @@ const LoginSignup = () => {
 
   const { name, email, password } = user;
 
-  const [avatar, setAvatar] = useState("/Profile.png");
-  const [avatarPreview, setAvatarPreview] = useState("/Profile.png");
-
   const loginSubmit = (e) => {
     e.preventDefault();
     dispatch(login(loginEmail, loginPassword));
+    alert("Login Successfully.")
   };
 
   const registerSubmit = (e) => {
@@ -64,20 +50,15 @@ const LoginSignup = () => {
     myForm.set("name", name);
     myForm.set("email", email);
     myForm.set("password", password);
-    myForm.set("avatar", avatar);
     dispatch(register(user));
+    alert("Register successfully.")
   };
 
   const registerDataChange = (e) => {
     if (e.target.name === "avatar") {
       const reader = new FileReader();
 
-      reader.onload = () => {
-        if (reader.readyState === 2) {
-          setAvatarPreview(reader.result);
-          setAvatar(reader.result);
-        }
-      };
+
 
       reader.readAsDataURL(e.target.files[0]);
     } else {
@@ -91,14 +72,13 @@ const LoginSignup = () => {
     if (token) {
       navigate('/')
     }
-  }, [])
+  }, [navigate, token])
 
   useEffect(() => {
     if (error) {
-      notifyAlert();
+      alert(error, "error");
       dispatch(clearErrors());
     }
-    console.log(isAuthenticated);
     if (isAuthenticated) {
       navigate("/account")
     }
@@ -217,18 +197,7 @@ const LoginSignup = () => {
               </form>
             </div>
           </div>
-          <ToastContainer
-            position="bottom-center"
-            autoClose={5000}
-            hideProgressBar={false}
-            newestOnTop={false}
-            closeOnClick
-            rtl={false}
-            pauseOnFocusLoss
-            draggable
-            pauseOnHover
-            theme="light"
-          />
+
         </Fragment>
       )}
     </Fragment>

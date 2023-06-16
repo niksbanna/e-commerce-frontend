@@ -2,13 +2,6 @@ import React, { Fragment, useEffect, useState } from "react";
 import "./newProduct.css";
 import { useSelector, useDispatch } from "react-redux";
 import { clearErrors, createProduct } from "../../actions/productAction";
-import { useAlert } from "react-alert";
-import { Button } from "@material-ui/core";
-import AccountTreeIcon from "@material-ui/icons/AccountTree";
-import DescriptionIcon from "@material-ui/icons/Description";
-import StorageIcon from "@material-ui/icons/Storage";
-import SpellcheckIcon from "@material-ui/icons/Spellcheck";
-import AttachMoneyIcon from "@material-ui/icons/AttachMoney";
 import SideBar from "./Sidebar";
 import { NEW_PRODUCT_RESET } from "../../constants/ProductConstants";
 import { useNavigate } from "react-router-dom";
@@ -45,9 +38,9 @@ const NewProduct = () => {
     // }
 
     if (success) {
-      alert.success("Product Created Successfully");
-      navigate("/admin/dashboard");
       dispatch({ type: NEW_PRODUCT_RESET });
+      alert("Product Created Successfully");
+      navigate("/admin/dashboard");
     }
   }, [dispatch, alert, error, success, navigate]);
 
@@ -102,7 +95,6 @@ const NewProduct = () => {
             <h1 className="background">Create Product</h1>
 
             <div>
-              <SpellcheckIcon />
               <input
                 type="text"
                 placeholder="Product Name"
@@ -112,7 +104,6 @@ const NewProduct = () => {
               />
             </div>
             <div>
-              <AttachMoneyIcon />
               <input
                 type="number"
                 placeholder="Price"
@@ -122,7 +113,7 @@ const NewProduct = () => {
             </div>
 
             <div>
-              <DescriptionIcon />
+              <div />
 
               <textarea
                 placeholder="Product Description"
@@ -134,7 +125,6 @@ const NewProduct = () => {
             </div>
 
             <div>
-              <AccountTreeIcon />
               <select onChange={(e) => setCategory(e.target.value)}>
                 <option value="">Choose Category</option>
                 {categories.map((cate) => (
@@ -146,7 +136,6 @@ const NewProduct = () => {
             </div>
 
             <div>
-              <StorageIcon />
               <input
                 type="number"
                 placeholder="Stock"
@@ -171,13 +160,13 @@ const NewProduct = () => {
               ))}
             </div>
 
-            <Button
+            <button
               id="createProductBtn"
               type="submit"
               disabled={loading ? true : false}
             >
               Create
-            </Button>
+            </button>
           </form>
         </div>
       </div>

@@ -21,9 +21,41 @@ import Dashboard from "./component/admin/Dashboard";
 import ProductList from "./component/admin/ProductList";
 import OrderList from "./component/admin/OrderList"
 import ProcessOrder from "./component/admin/ProcessOrder";
+import NewProduct from "./component/admin/NewProduct";
+import { ToastContainer, toast } from "react-toastify";
+import Cart from "./component/Cart/Cart";
+import Products from "./component/Product/Products";
+import UsersList from "./component/admin/UsersList";
+import ProductReviews from "./component/admin/ProductReview";
 
 
 const App = () => {
+
+  const handleToast = (msg, type) => {
+    if (type === "error") {
+      notifyErrorAlert(msg);
+    } else {
+      notifySuccessAlert(msg);
+    }
+  }
+
+  const toastOptions = {
+    position: "top-left",
+    autoClose: 5000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "light",
+  };
+
+  const notifyErrorAlert = (error) => {
+    toast.error(`Error: ${error} `, toastOptions);
+  };
+  const notifySuccessAlert = (success) => {
+    toast.success(`${success}`, toastOptions);
+  };
 
   React.useEffect(() => {
     WebFont.load({
@@ -38,35 +70,53 @@ const App = () => {
     <>
       <Router>
 
-        <Header />
+        <Header alert={handleToast} />
 
         <Routes>
 
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<Home alert={handleToast} />} />
           <Route path="/about" element={<About />} />
           <Route path="/notfound" element={<NotFound />} />
           <Route path="/contact" element={<Contact />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/product" element={<Product />} />
+          <Route path="/dashboard" element={<Dashboard alert={handleToast} />} />
+          <Route path="/products" element={<Products alert={handleToast} />} />
           <Route path='/loader' element={<Loader />} />
-          <Route path="/login" element={<LoginSignup />} />
-          <Route path="/orders" element={<MyOrders />} />
+          <Route path="/login" element={<LoginSignup alert={handleToast} />} />
+          <Route path="/orders" element={<MyOrders alert={handleToast} />} />
           <Route path="/account" element={<Profile />} />
+          <Route path="/cart" element={<Cart />} />
           <Route path="/shipping" element={<Shipping />} />
           <Route path="/order/confirm" element={<ConfirmOrder />} />
           <Route path="/success" element={<OrderSuccess />} />
-          <Route path='/product/:id' element={<ProductDetails />} />
+          <Route path='/product/:id' element={<ProductDetails alert={handleToast} />} />
           <Route path="/order/:id" element={<OrderDetails />} />
 
-          <Route path="/admin/products" element={<ProductList />} />
-          <Route path="/admin/orders" element={<OrderList />} />
-          <Route path="/admin/order/:id" element={<ProcessOrder />} />
-          <Route path="/admin/users" element={<OrderList />} />
+          <Route path="/admin/products" element={<ProductList alert={handleToast} />} />
+          <Route path="/admin/orders" element={<OrderList alert={handleToast} />} />
+          <Route path="/admin/order/:id" element={<ProcessOrder alert={handleToast} />} />
+          <Route path="/admin/users" element={<UsersList />} />
+          <Route path="/admin/product" element={<NewProduct />} />
+          <Route path="/admin/reviews" element={<ProductReviews alert={handleToast} />} />
+
+
 
 
 
         </Routes>
       </Router>
+
+      <ToastContainer
+        position="bottom-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
     </>
   );
 }

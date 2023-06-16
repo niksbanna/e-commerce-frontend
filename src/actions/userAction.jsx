@@ -20,6 +20,9 @@ import {
   USER_DETAILS_REQUEST,
   USER_DETAILS_SUCCESS,
   USER_DETAILS_FAIL,
+  DELETE_USER_REQUEST,
+  DELETE_USER_SUCCESS,
+  DELETE_USER_FAIL,
 
 
 } from "../constants/userConstants";
@@ -47,7 +50,7 @@ export const login = (email, password) => async (dispatch) => {
 
     dispatch({ type: LOGIN_SUCCESS, payload: data.user });
   } catch (error) {
-    dispatch({ type: LOGIN_FAIL, payload: "Something went wrong." });
+    dispatch({ type: LOGIN_FAIL, payload: `${error.response.data.message || error.message}` });
   }
 };
 
@@ -67,7 +70,7 @@ export const register = (userData) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: REGISTER_USER_FAIL,
-      payload: "Something went wrong.",
+      payload: `${error.response.data.message || error.message}`,
     });
   }
 };
@@ -89,7 +92,7 @@ export const loadUser = () => async (dispatch) => {
 
     dispatch({ type: LOAD_USER_SUCCESS, payload: data.user });
   } catch (error) {
-    dispatch({ type: LOAD_USER_FAIL, payload: "Something went wrong." });
+    dispatch({ type: LOAD_USER_FAIL, payload: `${error.response.data.message || error.message}` });
   }
 };
 
@@ -103,7 +106,7 @@ export const logout = () => async (dispatch) => {
     localStorage.removeItem('cartItems');
     dispatch({ type: LOGOUT_SUCCESS });
   } catch (error) {
-    dispatch({ type: LOGOUT_FAIL, payload: "Something went wrong." });
+    dispatch({ type: LOGOUT_FAIL, payload: `${error}` });
   }
 };
 
@@ -122,7 +125,7 @@ export const updateProfile = (userData) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: UPDATE_PROFILE_FAIL,
-      payload: "Something went wrong.",
+      payload: `${error.response.data.message || error.message}`,
     });
   }
 };
@@ -143,7 +146,7 @@ export const getAllUsers = () => async (dispatch) => {
 
     dispatch({ type: ALL_USERS_SUCCESS, payload: data.users });
   } catch (error) {
-    dispatch({ type: ALL_USERS_FAIL, payload: "Something went wrong." });
+    dispatch({ type: ALL_USERS_FAIL, payload: `${error.response.data.message || error.message}` });
   }
 };
 
@@ -153,7 +156,7 @@ export const getUserDetails = (id) => async (dispatch) => {
     const token = localStorage.getItem('token');
 
     dispatch({ type: USER_DETAILS_REQUEST });
-    const { data } = await axios.get(`/api/v1/admin/user/${id}`, {
+    const { data } = await axios.get(`http://${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT}/api/users/admin/user/${id}`, {
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -161,13 +164,27 @@ export const getUserDetails = (id) => async (dispatch) => {
 
     dispatch({ type: USER_DETAILS_SUCCESS, payload: data.user });
   } catch (error) {
-    dispatch({ type: USER_DETAILS_FAIL, payload: "Something went wrong." });
+    dispatch({ type: USER_DETAILS_FAIL, payload: `${error.response.data.message || error.message}` });
   }
 };
 
 
 
+// Delete User
+export const deleteUser = (id) => async (dispatch) => {
+  try {
+    dispatch({ type: DELETE_USER_REQUEST });
 
+    const { data } = await axios.delete(`http://${process.env.REACT_APP_HOST}:${process.env.REACT_APP_PORT}/api/users/admin/user/${id}`);
+
+    dispatch({ type: DELETE_USER_SUCCESS, payload: data });
+  } catch (error) {
+    dispatch({
+      type: DELETE_USER_FAIL,
+      payload: error.response.data.message,
+    });
+  }
+};
 
 
 // Clearing Errors

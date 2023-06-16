@@ -6,7 +6,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import ReviewCard from "./ReviewCard.js";
 import Loader from "../layout/Loader/Loader";
 import { Rating } from "@material-ui/lab";
-import { ToastContainer, toast } from "react-toastify";
 
 import {
   Dialog,
@@ -17,31 +16,10 @@ import {
 } from "@material-ui/core";
 import { addItemsToCart } from "../../actions/cartAction";
 
-const ProductDetails = () => {
-  const notifyAlert = (error) => {
-    toast.error(`Error: ${error}`, {
-      position: "bottom-right",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-    });
-  };
-  const notifySuccess = (num) => {
-    toast.success(`${num} Items added to cart.`, {
-      position: "bottom-right",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-    });
-  };
+const ProductDetails = ({ alert }) => {
+
+
+  const token = localStorage.getItem("token")
 
   const [quantity, setQuantity] = useState(1);
   const [open, setOpen] = useState(false);
@@ -59,10 +37,13 @@ const ProductDetails = () => {
     setQuantity(quantity + 1);
   };
 
+
   const addToCartHandler = () => {
-    console.log("hello", id, quantity);
+    if (!token) {
+      return alert("Please login first to add item to cart", "error")
+    }
     dispatch(addItemsToCart(id, quantity));
-    notifySuccess(quantity)
+    alert("Item added to cart.")
   };
 
   const submitReviewToggle = () => {
@@ -70,13 +51,15 @@ const ProductDetails = () => {
   };
 
   const reviewSubmitHandler = () => {
-    console.log("submit rating")
+    if (!token) {
+      return alert("Please login first to review", "error")
+    }
     const myForm = new FormData();
     myForm.set("rating", rating);
     myForm.set("comment", comment);
     myForm.set("productId", id);
     dispatch(newReview(myForm));
-
+    alert("Review added successfully.")
     setOpen(false);
   };
 
@@ -101,11 +84,11 @@ const ProductDetails = () => {
 
   useEffect(() => {
     if (error) {
-      notifyAlert(error)
+      alert(error, "error")
     }
 
     if (!product) {
-      notifyAlert('Product not found');
+      alert('Product not found');
       setTimeout(() => {
         navigate("/orders");
       }, 3000)
@@ -219,18 +202,7 @@ const ProductDetails = () => {
           ) : (
             <p className="noReviews">No Reviews Yet</p>
           )}
-          <ToastContainer
-            position="bottom-center"
-            autoClose={5000}
-            hideProgressBar={false}
-            newestOnTop={false}
-            closeOnClick
-            rtl={false}
-            pauseOnFocusLoss
-            draggable
-            pauseOnHover
-            theme="light"
-          />
+
         </Fragment>
       )}
     </Fragment>

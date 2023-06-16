@@ -21,22 +21,17 @@ const Sidebar = () => {
           <DashboardIcon /> Dashboard
         </p>
       </Link>
-      <Link>
-        <ParkIcon
-          defaultcollapseicon={<ExpandMoreIcon />}
-          defaultexpandicon={<ImportExportIcon />}
-        >
-          <ParkIcon nodeId="1" label="Products">
-            <Link to="/admin/products">
-              <ParkIcon nodeId="2" label="All" icon={<PostAddIcon />} />
-            </Link>
 
-            <Link to="/admin/product">
-              <ParkIcon nodeId="3" label="Create" icon={<AddIcon />} />
-            </Link>
-          </ParkIcon>
-        </ParkIcon>
+      <Link to="/admin/products">
+        <PostAddIcon />
+        All Products
       </Link>
+
+      <Link to="/admin/product">
+        <AddIcon />
+        Create a Product
+      </Link>
+
       <Link to="/admin/orders">
         <p>
           <ListAltIcon />

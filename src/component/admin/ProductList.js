@@ -13,7 +13,7 @@ import { Button } from "@material-ui/core";
 import SideBar from "./Sidebar";
 import { DELETE_PRODUCT_RESET } from "../../constants/ProductConstants";
 
-const ProductList = () => {
+const ProductList = ({ alert }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -29,20 +29,20 @@ const ProductList = () => {
   };
 
   useEffect(() => {
-    // if (error) {
-    //   alert.error(error);
-    //   dispatch(clearErrors());
-    // }
+    if (error) {
+      alert(error, "error");
+      dispatch(clearErrors());
+    }
 
-    // if (deleteError) {
-    //   alert.error(deleteError);
-    //   dispatch(clearErrors());
-    // }
+    if (deleteError) {
+      alert(deleteError, "error");
+      dispatch(clearErrors());
+    }
 
     if (isDeleted) {
-      // alert.success("Product Deleted Successfully");
-      navigate("/admin/dashboard");
       dispatch({ type: DELETE_PRODUCT_RESET });
+      alert("Product Deleted Successfully");
+      navigate("/admin/dashboard");
     }
 
     dispatch(getAdminProduct());

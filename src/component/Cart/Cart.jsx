@@ -9,7 +9,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 const Cart = () => {
     const dispatch = useDispatch();
-    const navigate = useNavigate(); // Hook for navigation
+    const navigate = useNavigate();
     const { cartItems } = useSelector((state) => state.cart);
 
     const increaseQuantity = (id, quantity, stock) => {
@@ -33,7 +33,7 @@ const Cart = () => {
     };
 
     const checkoutHandler = () => {
-        navigate("/login?redirect=shipping"); // Use navigate instead of history.push
+        navigate("/order/confirm");
     };
 
     return (
